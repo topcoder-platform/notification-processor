@@ -59,6 +59,17 @@ async function _fetchUserDetails (handle) {
 }
 
 /**
+ * Fetch review details
+ * @param typeId Review type ID
+ * @returns {Promise<>}
+ * @private
+ */
+async function _fetchReviewDetails (typeId) {
+  const reviewResponse = await helper.apiFetch(`${config.REVIEW_TYPE_API_URL}/${typeId}`)
+  return reviewResponse
+}
+
+/**
  * Handle 'submission' message
  * @param {Object} message the message
  * @returns {Promise<>}
@@ -90,14 +101,14 @@ processSubmission.schema = {
  * @returns {Promise<>}
  */
 async function processReview (message) {
-  const {submissionId, reviewerHandle} = message.payload
-  const reviewer = await _fetchUserDetails(reviewerHandle)
+  const {submissionId, reviewerId} = message.payload
+  const review = await _fetchReviewDetails(reviewerId)
   const submissionDetails = await _fetchSubmissionDetails(submissionId)
   return {
     ...submissionDetails,
     data: {
       ...submissionDetails.data,
-      reviewer
+      review
     }
   }
 }
@@ -112,8 +123,7 @@ processReview.schema = {
       resource: Joi.string().valid('review').required(),
       id: Joi.string().uuid().required(),
       submissionId: Joi.string().uuid().required(),
-      reviewerId: Joi.string().uuid().required(),
-      reviewerHandle: Joi.string().required()
+      reviewerId: Joi.string().uuid().required()
     }).unknown(true).required()
   }).required()
 }

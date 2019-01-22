@@ -9,6 +9,8 @@ const {
   challengeId,
   submissionId,
   submitterHandle,
+  reviewTypeId,
+  reviewType,
   challengeResponse,
   submissionResponse,
   submitterResponse,
@@ -55,6 +57,12 @@ prepare((done) => {
     .persist()
     .get(`/${submitterHandle}`)
     .reply(200, submitterResponse)
+
+  // mock review type api request
+  nock(config.REVIEW_TYPE_API_URL)
+    .persist()
+    .get(`/${reviewTypeId}`)
+    .reply(200, reviewType)
 
   // mock user api request
   nock(config.USER_API_URL)
