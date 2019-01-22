@@ -10,7 +10,7 @@ const SRMChallengeId = 1111111
 const SRMSubmissionId = 'bbbbbbbb-725d-4973-9778-360918a09bc0'
 const submitterHandle = 'lazybaer'
 const submitterEmail = 'email@domain.com.z'
-const reviewerHandle = submitterHandle
+const reviewTypeId = '96059e8d-4761-4978-9a14-c86ae6b971c3'
 
 const status404SubmissionId = 333333
 const status500SubmissionId = 999999
@@ -53,6 +53,12 @@ const updateSubmissionMessage = {
   }
 }
 
+const reviewType = {
+  'id': '96059e8d-4761-4978-9a14-c86ae6b971c3',
+  'name': 'Iterative Review',
+  'isActive': true
+}
+
 const reviewNotificationMessage = {
   'topic': 'submission.notification.create',
   'originator': 'submission-api',
@@ -67,7 +73,6 @@ const reviewNotificationMessage = {
     'updatedBy': 'maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients',
     'score': 100,
     'reviewerId': '96059e8d-4761-4978-9a14-c86ae6b971c3',
-    'reviewerHandle': reviewerHandle,
     'submissionId': submissionId,
     'scoreCardId': 30001850,
     'typeId': '68c5a381-c8ab-48af-92a7-7a869a4ee6c3'
@@ -524,11 +529,7 @@ const reviewResult = {
       'numberOfRegistrants': 5,
       'numberOfSubmissions': 5
     },
-    'reviewer': {
-      'handle': submitterHandle,
-      'email': submitterEmail,
-      'rating': {'rating': 0, 'track': null, 'subTrack': null}
-    }
+    'review': reviewType
   },
   'recipients': [submitterEmail],
   'replyTo': ''
@@ -541,10 +542,10 @@ const submissionRequiredFields = [...messageRequiredFields,
 ]
 const submissionStringFields = [...commonStringFields]
 const reviewRequiredFields = [...messageRequiredFields,
-  'payload.resource', 'payload.id', 'payload.submissionId', 'payload.reviewerId', 'payload.reviewerHandle'
+  'payload.resource', 'payload.id', 'payload.submissionId', 'payload.reviewerId'
 ]
 const submissionIntegerFields = ['payload.challengeId', 'payload.memberId']
-const reviewStringFields = [...commonStringFields, 'payload.submissionId', 'payload.reviewerHandle', 'payload.reviewerId']
+const reviewStringFields = [...commonStringFields, 'payload.submissionId', 'payload.reviewerId']
 
 const testCases = {
   'Submission Create Notification': {
@@ -596,5 +597,7 @@ module.exports = {
   SRMSubmissionResponse,
   SRMSubmissionId,
   SRMChallengeId,
-  SRMChallengeResponse
+  SRMChallengeResponse,
+  reviewType,
+  reviewTypeId
 }
