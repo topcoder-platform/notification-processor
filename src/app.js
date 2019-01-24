@@ -48,10 +48,6 @@ const dataHandler = async (messageSet, topic, partition) => {
       // attempt to process the message
       let details
       if (resource === 'review') {
-        // TODO: Remove the following if block after reviewerHandle is included in the message payload
-        if (!_.get(messageJSON, 'payload.reviewerHandle')) {
-          messageJSON.payload.reviewerHandle = 'thomaskranitsas'
-        }
         details = await processorService.processReview(messageJSON)
       } else if (resource === 'submission') {
         details = await processorService.processSubmission(messageJSON)
