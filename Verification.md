@@ -92,7 +92,7 @@ info: Successfully processed the message and published the result on kafka
 ```
 
 - write message of `Create Review`:
-  `{ "topic": "submission.notification.create", "originator": "submission-api", "timestamp": "2018-08-06T15:46:05.575Z", "mime-type": "application/json", "payload": { "resource": "review", "id": "c09ab9bd-9acf-40a4-8d6f-db50e6237a4d", "created": "2019-01-10T17:56:04.223Z", "updated": "2019-01-10T17:56:04.223Z", "createdBy": "maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients", "updatedBy": "maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients", "score": 100, "reviewerId": "96059e8d-4761-4978-9a14-c86ae6b971c3", "reviewerHandle": "lazybaer", "submissionId": "bac822d2-725d-4973-9778-360918a09bc0", "scoreCardId": 30001850, "typeId": "68c5a381-c8ab-48af-92a7-7a869a4ee6c3" } }`
+  `{ "topic": "submission.notification.create", "originator": "submission-api", "timestamp": "2018-08-06T15:46:05.575Z", "mime-type": "application/json", "payload": { "resource": "review", "id": "c09ab9bd-9acf-40a4-8d6f-db50e6237a4d", "created": "2019-01-10T17:56:04.223Z", "updated": "2019-01-10T17:56:04.223Z", "createdBy": "maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients", "updatedBy": "maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients", "score": 100, "reviewerId": "96059e8d-4761-4978-9a14-c86ae6b971c3", "submissionId": "bac822d2-725d-4973-9778-360918a09bc0", "scoreCardId": 30001850, "typeId": "68c5a381-c8ab-48af-92a7-7a869a4ee6c3" } }`
 - the processor app console will show:
 
 ```bash
