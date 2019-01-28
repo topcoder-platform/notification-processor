@@ -1,5 +1,5 @@
-# Use the base image with Node.js 8.11.3
-FROM node:8.11.3
+# Use the base image with Node.js 10.15-jessie
+FROM node:10.15-jessie
 
 # Copy the current directory into the Docker image
 COPY . /submission-notification-processor
