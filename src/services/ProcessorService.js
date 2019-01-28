@@ -66,7 +66,7 @@ async function _fetchUserDetails (handle) {
  * @returns {Promise<>}
  * @private
  */
-async function _fetchReviewDetails (typeId) {
+async function _fetchReviewTypeDetails (typeId) {
   const reviewResponse = await helper.apiFetchAuthenticated(`${config.REVIEW_TYPE_API_URL}/${typeId}`)
   return reviewResponse
 }
@@ -108,13 +108,14 @@ async function processReview (message) {
   const {
     submissionId, reviewerId
   } = message.payload
-  const review = await _fetchReviewDetails(reviewerId)
+  const reviewType = await _fetchReviewTypeDetails(reviewerId)
   const submissionDetails = await _fetchSubmissionDetails(submissionId)
   return {
     ...submissionDetails,
     data: {
       ...submissionDetails.data,
-      review
+      reviewType,
+      review: message.payload
     }
   }
 }

@@ -4,7 +4,6 @@
 const fs = require('fs')
 
 function fileIfExists (path) {
-  console.log(path)
   return fs.existsSync(path) ? path : null
 }
 
