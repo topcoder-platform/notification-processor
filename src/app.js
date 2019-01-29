@@ -8,7 +8,9 @@ const config = require('config')
 const healthcheck = require('topcoder-healthcheck-dropin')
 const Kafka = require('no-kafka')
 const logger = require('./common/logger')
-const {getKafkaConsumerOptions, getKafkaProducerOptions} = require('./common/utils')
+const {
+  getKafkaConsumerOptions, getKafkaProducerOptions
+} = require('./common/utils')
 const processorService = require('./services/ProcessorService')
 
 // create consumer
@@ -18,7 +20,9 @@ const producer = new Kafka.Producer(getKafkaProducerOptions())
 const dataHandler = async (messageSet, topic, partition) => {
   await Promise.each(messageSet, async (m) => {
     const message = m.message.value.toString('utf8')
-    logger.info(`Handle Kafka event message; Topic: ${topic}; Partition: ${partition}; Offset: ${m.offset}; Message: ${message}.`)
+    logger.info(
+      `Handle Kafka event message; Topic: ${topic}; Partition: ${partition}; Offset: ${m.offset}; Message: ${message}.`
+    )
     let messageJSON
     try {
       messageJSON = JSON.parse(message)
@@ -26,13 +30,17 @@ const dataHandler = async (messageSet, topic, partition) => {
       logger.error('Invalid message JSON.')
       logger.logFullError(e)
       // commit the message and ignore it
-      await consumer.commitOffset({topic, partition, offset: m.offset})
+      await consumer.commitOffset({
+        topic, partition, offset: m.offset
+      })
       return
     }
     if (messageJSON.topic !== topic) {
       logger.error(`The message topic ${messageJSON.topic} doesn't match the Kafka topic ${topic}.`)
       // commit the message and ignore it
-      await consumer.commitOffset({topic, partition, offset: m.offset})
+      await consumer.commitOffset({
+        topic, partition, offset: m.offset
+      })
       return
     }
 
@@ -40,7 +48,9 @@ const dataHandler = async (messageSet, topic, partition) => {
     if (!_.includes(['review', 'submission'], resource)) {
       logger.info(`The resource type ${resource} is ignored.`)
       // commit the message and ignore it
-      await consumer.commitOffset({topic, partition, offset: m.offset})
+      await consumer.commitOffset({
+        topic, partition, offset: m.offset
+      })
       return
     }
 
@@ -72,7 +82,9 @@ const dataHandler = async (messageSet, topic, partition) => {
       logger.logFullError(err)
     } finally {
       // Commit offset regardless of error
-      await consumer.commitOffset({topic, partition, offset: m.offset})
+      await consumer.commitOffset({
+        topic, partition, offset: m.offset
+      })
     }
   })
 }
@@ -93,10 +105,16 @@ const check = () => {
 // consume configured topics and setup healthcheck endpoint
 producer.init()
   .then(() => {
+    const topics = [config.CREATE_NOTIFICATION_TOPIC]
+
+    if (config.INCLUDE_UPDATES) {
+      topics.push(config.UPDATE_NOTIFICATION_TOPIC)
+    }
+
     logger.debug('Producer initialized successfully')
     return consumer
       .init([{
-        subscriptions: [config.CREATE_NOTIFICATION_TOPIC, config.UPDATE_NOTIFICATION_TOPIC],
+        subscriptions: topics,
         handler: dataHandler
       }])
   })

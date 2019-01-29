@@ -82,7 +82,7 @@ async function processSubmission (message) {
   const {
     id
   } = message.payload
-  
+
   return _fetchSubmissionDetails(id)
 }
 
@@ -108,7 +108,7 @@ processSubmission.schema = {
  */
 async function processReview (message) {
   const {
-    submissionId, reviewerId, typeId
+    submissionId, typeId
   } = message.payload
   const reviewType = await _fetchReviewTypeDetails(typeId)
   const submissionDetails = await _fetchSubmissionDetails(submissionId)
