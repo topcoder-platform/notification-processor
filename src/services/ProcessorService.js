@@ -37,6 +37,7 @@ async function _fetchSubmissionDetails (submissionId) {
         'subTrack', 'technologies', 'platforms', 'numberOfRegistrants', 'numberOfSubmissions'
       ])
     },
+    version: config.VERSION,
     recipients: [submitter.email],
     replyTo: ''
   }
@@ -81,6 +82,7 @@ async function processSubmission (message) {
   const {
     id
   } = message.payload
+  
   return _fetchSubmissionDetails(id)
 }
 
@@ -106,9 +108,9 @@ processSubmission.schema = {
  */
 async function processReview (message) {
   const {
-    submissionId, reviewerId
+    submissionId, reviewerId, typeId
   } = message.payload
-  const reviewType = await _fetchReviewTypeDetails(reviewerId)
+  const reviewType = await _fetchReviewTypeDetails(typeId)
   const submissionDetails = await _fetchSubmissionDetails(submissionId)
   return {
     ...submissionDetails,
