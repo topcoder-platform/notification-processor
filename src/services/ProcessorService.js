@@ -23,7 +23,9 @@ async function _fetchSubmissionDetails (submissionId) {
   }
 
   // Fetch member details
-  const {createdBy: submitterHandle} = submission
+  const {
+    createdBy: submitterHandle
+  } = submission
   const submitter = await _fetchUserDetails(submitterHandle)
 
   return {
@@ -64,8 +66,8 @@ async function _fetchUserDetails (handle) {
  * @returns {Promise<>}
  * @private
  */
-async function _fetchReviewDetails (typeId) {
-  const reviewResponse = await helper.apiFetch(`${config.REVIEW_TYPE_API_URL}/${typeId}`)
+async function _fetchReviewTypeDetails (typeId) {
+  const reviewResponse = await helper.apiFetchAuthenticated(`${config.REVIEW_TYPE_API_URL}/${typeId}`)
   return reviewResponse
 }
 
@@ -76,7 +78,9 @@ async function _fetchReviewDetails (typeId) {
  */
 async function processSubmission (message) {
   // Fetch submission details
-  const {id} = message.payload
+  const {
+    id
+  } = message.payload
   return _fetchSubmissionDetails(id)
 }
 
@@ -101,14 +105,17 @@ processSubmission.schema = {
  * @returns {Promise<>}
  */
 async function processReview (message) {
-  const {submissionId, reviewerId} = message.payload
-  const review = await _fetchReviewDetails(reviewerId)
+  const {
+    submissionId, reviewerId
+  } = message.payload
+  const reviewType = await _fetchReviewTypeDetails(reviewerId)
   const submissionDetails = await _fetchSubmissionDetails(submissionId)
   return {
     ...submissionDetails,
     data: {
       ...submissionDetails.data,
-      review
+      reviewType,
+      review: message.payload
     }
   }
 }
