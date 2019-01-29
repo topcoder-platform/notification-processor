@@ -22,9 +22,6 @@ async function _fetchSubmissionDetails (submissionId) {
     throw new Error('SRMs are ignored')
   }
 
-  logger.debug(`submission: ${submission}`)
-  logger.debug(`challengeResponse: ${challengeResponse}`)
-
   // Fetch member details
   const {
     createdBy: submitterHandle
@@ -40,7 +37,7 @@ async function _fetchSubmissionDetails (submissionId) {
         'subTrack', 'technologies', 'platforms', 'numberOfRegistrants', 'numberOfSubmissions'
       ])
     },
-    version: 'v3',
+    version: config.VERSION,
     recipients: [submitter.email],
     replyTo: ''
   }
@@ -56,9 +53,6 @@ async function _fetchUserDetails (handle) {
   const memberResponse = await helper.apiFetch(`${config.MEMBER_API_URL}/${handle}`)
   const member = _.get(memberResponse, 'result.content')
   const userResponse = await helper.apiFetchAuthenticated(`${config.USER_API_URL}/?filter=id=${member.userId}`)
-
-  logger.debug(`memberResponse: ${memberResponse}`)
-  logger.debug(`userResponse: ${userResponse}`)
 
   return {
     handle,
