@@ -88,20 +88,18 @@ const submissionResponse = {
   'url': 'https://s3.amazonaws.com/topcoder-dev-submissions/bac822d2-725d-4973-9778-360918a09bc0.zip',
   'challengeId': challengeId,
   'createdBy': submitterHandle,
-  'review': [
-    {
-      'score': 100,
-      'updatedBy': 'maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients',
-      'reviewerId': '96059e8d-4761-4978-9a14-c86ae6b971c3',
-      'submissionId': 'bac822d2-725d-4973-9778-360918a09bc0',
-      'createdBy': 'maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients',
-      'created': '2019-01-10T17:56:04.223Z',
-      'scoreCardId': 30001850,
-      'typeId': '68c5a381-c8ab-48af-92a7-7a869a4ee6c3',
-      'id': 'c09ab9bd-9acf-40a4-8d6f-db50e6237a4d',
-      'updated': '2019-01-10T17:56:04.223Z'
-    }
-  ],
+  'review': [{
+    'score': 100,
+    'updatedBy': 'maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients',
+    'reviewerId': '96059e8d-4761-4978-9a14-c86ae6b971c3',
+    'submissionId': 'bac822d2-725d-4973-9778-360918a09bc0',
+    'createdBy': 'maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients',
+    'created': '2019-01-10T17:56:04.223Z',
+    'scoreCardId': 30001850,
+    'typeId': '68c5a381-c8ab-48af-92a7-7a869a4ee6c3',
+    'id': 'c09ab9bd-9acf-40a4-8d6f-db50e6237a4d',
+    'updated': '2019-01-10T17:56:04.223Z'
+  }],
   'id': submissionId,
   'submissionPhaseId': 763584,
   'updated': '2019-01-10T17:55:59.135Z',
@@ -138,64 +136,55 @@ const challengeResponse = {
         350,
         150
       ],
-      'terms': [
-        {
-          'termsOfUseId': 20704,
-          'role': 'Specification Reviewer',
-          'agreeabilityType': 'Electronically-agreeable',
-          'title': 'Standard Reviewer Terms v1.0',
-          'url': ''
-        },
-        {
-          'termsOfUseId': 21303,
-          'role': 'Submitter',
-          'agreeabilityType': 'Electronically-agreeable',
-          'title': 'Standard Terms for TopCoder Competitions v2.2',
-          'url': ''
-        },
-        {
-          'termsOfUseId': 20704,
-          'role': 'Primary Screener',
-          'agreeabilityType': 'Electronically-agreeable',
-          'title': 'Standard Reviewer Terms v1.0',
-          'url': ''
-        },
-        {
-          'termsOfUseId': 20704,
-          'role': 'Reviewer',
-          'agreeabilityType': 'Electronically-agreeable',
-          'title': 'Standard Reviewer Terms v1.0',
-          'url': ''
-        },
-        {
-          'termsOfUseId': 20704,
-          'role': 'Aggregator',
-          'agreeabilityType': 'Electronically-agreeable',
-          'title': 'Standard Reviewer Terms v1.0',
-          'url': ''
-        },
-        {
-          'termsOfUseId': 20704,
-          'role': 'Final Reviewer',
-          'agreeabilityType': 'Electronically-agreeable',
-          'title': 'Standard Reviewer Terms v1.0',
-          'url': ''
-        },
-        {
-          'termsOfUseId': 20794,
-          'role': 'Manager',
-          'agreeabilityType': 'Non-electronically-agreeable',
-          'title': 'Approved OR Managers - TopCoder Technical Team',
-          'url': 'http://www.topcoder.com'
-        },
-        {
-          'termsOfUseId': 20893,
-          'role': 'Copilot',
-          'agreeabilityType': 'Non-electronically-agreeable',
-          'title': 'TopCoder Master Services Agreement',
-          'url': 'http://www.topcoder.com/wiki/download/attachments/35129137/Member+Master+Agreement+v0020409.pdf'
-        }
-      ],
+      'terms': [{
+        'termsOfUseId': 20704,
+        'role': 'Specification Reviewer',
+        'agreeabilityType': 'Electronically-agreeable',
+        'title': 'Standard Reviewer Terms v1.0',
+        'url': ''
+      }, {
+        'termsOfUseId': 21303,
+        'role': 'Submitter',
+        'agreeabilityType': 'Electronically-agreeable',
+        'title': 'Standard Terms for TopCoder Competitions v2.2',
+        'url': ''
+      }, {
+        'termsOfUseId': 20704,
+        'role': 'Primary Screener',
+        'agreeabilityType': 'Electronically-agreeable',
+        'title': 'Standard Reviewer Terms v1.0',
+        'url': ''
+      }, {
+        'termsOfUseId': 20704,
+        'role': 'Reviewer',
+        'agreeabilityType': 'Electronically-agreeable',
+        'title': 'Standard Reviewer Terms v1.0',
+        'url': ''
+      }, {
+        'termsOfUseId': 20704,
+        'role': 'Aggregator',
+        'agreeabilityType': 'Electronically-agreeable',
+        'title': 'Standard Reviewer Terms v1.0',
+        'url': ''
+      }, {
+        'termsOfUseId': 20704,
+        'role': 'Final Reviewer',
+        'agreeabilityType': 'Electronically-agreeable',
+        'title': 'Standard Reviewer Terms v1.0',
+        'url': ''
+      }, {
+        'termsOfUseId': 20794,
+        'role': 'Manager',
+        'agreeabilityType': 'Non-electronically-agreeable',
+        'title': 'Approved OR Managers - TopCoder Technical Team',
+        'url': 'http://www.topcoder.com'
+      }, {
+        'termsOfUseId': 20893,
+        'role': 'Copilot',
+        'agreeabilityType': 'Non-electronically-agreeable',
+        'title': 'TopCoder Master Services Agreement',
+        'url': 'http://www.topcoder.com/wiki/download/attachments/35129137/Member+Master+Agreement+v0020409.pdf'
+      }],
       'finalSubmissionGuidelines': 'T',
       'technologies': [
         'Node.js'
@@ -206,145 +195,117 @@ const challengeResponse = {
       'currentPhaseName': 'Submission',
       'currentPhaseRemainingTime': 1424328,
       'currentPhaseEndDate': '2019-01-31T12:04:00.000Z',
-      'registrants': [
-        {
-          'reliability': null,
-          'colorStyle': 'color: #000000',
-          'registrationDate': '2019-01-10T15:07:03.000Z',
-          'submissionDate': '2019-01-10T15:22:48.000Z',
-          'handle': 'TonyJ'
-        },
-        {
-          'reliability': null,
-          'colorStyle': 'color: #000000',
-          'registrationDate': '2019-01-10T15:20:27.000Z',
-          'submissionDate': '2019-01-10T15:30:54.000Z',
-          'handle': 'dushyantb'
-        },
-        {
-          'reliability': null,
-          'colorStyle': 'color: #000000',
-          'registrationDate': '2019-01-10T15:35:20.000Z',
-          'submissionDate': '2019-01-11T13:14:29.000Z',
-          'handle': 'mess'
-        },
-        {
-          'reliability': null,
-          'colorStyle': 'color: #000000',
-          'registrationDate': '2019-01-10T16:17:37.000Z',
-          'submissionDate': '2019-01-10T17:56:00.000Z',
-          'handle': 'lazybaer'
-        },
-        {
-          'reliability': null,
-          'colorStyle': 'color: #000000',
-          'registrationDate': '2019-01-11T13:19:18.000Z',
-          'submissionDate': '2019-01-11T13:21:02.000Z',
-          'handle': 'FireIce'
-        }
-      ],
-      'phases': [
-        {
-          'duration': 1936800000,
-          'actualStartTime': '2019-01-09T02:04:15.946Z',
-          'scheduledStartTime': '2019-01-09T02:04:15.946Z',
-          'phaseId': 763583,
-          'scheduledEndTime': '2019-01-31T12:04:00.000Z',
-          'fixedStartTime': '2019-01-09T02:00:00.000Z',
-          'type': 'Registration',
-          'status': 'Open'
-        },
-        {
-          'duration': 1936500000,
-          'actualStartTime': '2019-01-09T02:09:24.295Z',
-          'scheduledStartTime': '2019-01-09T02:09:24.295Z',
-          'phaseId': 763584,
-          'scheduledEndTime': '2019-01-31T12:04:00.000Z',
-          'type': 'Submission',
-          'status': 'Open'
-        },
-        {
-          'duration': 172800000,
-          'scheduledStartTime': '2019-01-31T12:04:00.000Z',
-          'phaseId': 763585,
-          'scheduledEndTime': '2019-02-02T12:04:00.000Z',
-          'type': 'Review',
-          'status': 'Scheduled'
-        },
-        {
-          'duration': 86400000,
-          'scheduledStartTime': '2019-02-02T12:04:00.000Z',
-          'phaseId': 763586,
-          'scheduledEndTime': '2019-02-03T12:04:00.000Z',
-          'type': 'Appeals',
-          'status': 'Scheduled'
-        },
-        {
-          'duration': 43200000,
-          'scheduledStartTime': '2019-02-03T12:04:00.000Z',
-          'phaseId': 763587,
-          'scheduledEndTime': '2019-02-04T00:04:00.000Z',
-          'type': 'Appeals Response',
-          'status': 'Scheduled'
-        }
-      ],
-      'submissions': [
-        {
-          'submitter': 'dushyantb',
-          'submitterId': 40157409,
-          'submissions': [
-            {
-              'submissionId': 206431,
-              'submissionStatus': 'Active',
-              'submissionTime': '2019-01-10T15:30:54.000Z'
-            }
-          ]
-        },
-        {
-          'submitter': 'FireIce',
-          'submitterId': 15050434,
-          'submissions': [
-            {
-              'submissionId': 206471,
-              'submissionStatus': 'Active',
-              'submissionTime': '2019-01-11T13:21:02.000Z'
-            }
-          ]
-        },
-        {
-          'submitter': 'TonyJ',
-          'submitterId': 8547899,
-          'submissions': [
-            {
-              'submissionId': 206429,
-              'submissionStatus': 'Active',
-              'submissionTime': '2019-01-10T15:22:48.000Z'
-            }
-          ]
-        },
-        {
-          'submitter': 'lazybaer',
-          'submitterId': 23225544,
-          'submissions': [
-            {
-              'submissionId': 206452,
-              'submissionStatus': 'Active',
-              'submissionTime': '2019-01-10T17:56:00.000Z'
-            }
-          ]
-        },
-        {
-          'submitter': 'mess',
-          'submitterId': 305384,
-          'submissions': [
-            {
-              'submissionId': 206470,
-              'submissionStatus': 'Active',
-              'submissionTime': '2019-01-11T13:14:29.000Z'
-            }
-          ]
-        }
-      ],
+      'registrants': [{
+        'reliability': null,
+        'colorStyle': 'color: #000000',
+        'registrationDate': '2019-01-10T15:07:03.000Z',
+        'submissionDate': '2019-01-10T15:22:48.000Z',
+        'handle': 'TonyJ'
+      }, {
+        'reliability': null,
+        'colorStyle': 'color: #000000',
+        'registrationDate': '2019-01-10T15:20:27.000Z',
+        'submissionDate': '2019-01-10T15:30:54.000Z',
+        'handle': 'dushyantb'
+      }, {
+        'reliability': null,
+        'colorStyle': 'color: #000000',
+        'registrationDate': '2019-01-10T15:35:20.000Z',
+        'submissionDate': '2019-01-11T13:14:29.000Z',
+        'handle': 'mess'
+      }, {
+        'reliability': null,
+        'colorStyle': 'color: #000000',
+        'registrationDate': '2019-01-10T16:17:37.000Z',
+        'submissionDate': '2019-01-10T17:56:00.000Z',
+        'handle': 'lazybaer'
+      }, {
+        'reliability': null,
+        'colorStyle': 'color: #000000',
+        'registrationDate': '2019-01-11T13:19:18.000Z',
+        'submissionDate': '2019-01-11T13:21:02.000Z',
+        'handle': 'FireIce'
+      }],
+      'phases': [{
+        'duration': 1936800000,
+        'actualStartTime': '2019-01-09T02:04:15.946Z',
+        'scheduledStartTime': '2019-01-09T02:04:15.946Z',
+        'phaseId': 763583,
+        'scheduledEndTime': '2019-01-31T12:04:00.000Z',
+        'fixedStartTime': '2019-01-09T02:00:00.000Z',
+        'type': 'Registration',
+        'status': 'Open'
+      }, {
+        'duration': 1936500000,
+        'actualStartTime': '2019-01-09T02:09:24.295Z',
+        'scheduledStartTime': '2019-01-09T02:09:24.295Z',
+        'phaseId': 763584,
+        'scheduledEndTime': '2019-01-31T12:04:00.000Z',
+        'type': 'Submission',
+        'status': 'Open'
+      }, {
+        'duration': 172800000,
+        'scheduledStartTime': '2019-01-31T12:04:00.000Z',
+        'phaseId': 763585,
+        'scheduledEndTime': '2019-02-02T12:04:00.000Z',
+        'type': 'Review',
+        'status': 'Scheduled'
+      }, {
+        'duration': 86400000,
+        'scheduledStartTime': '2019-02-02T12:04:00.000Z',
+        'phaseId': 763586,
+        'scheduledEndTime': '2019-02-03T12:04:00.000Z',
+        'type': 'Appeals',
+        'status': 'Scheduled'
+      }, {
+        'duration': 43200000,
+        'scheduledStartTime': '2019-02-03T12:04:00.000Z',
+        'phaseId': 763587,
+        'scheduledEndTime': '2019-02-04T00:04:00.000Z',
+        'type': 'Appeals Response',
+        'status': 'Scheduled'
+      }],
+      'submissions': [{
+        'submitter': 'dushyantb',
+        'submitterId': 40157409,
+        'submissions': [{
+          'submissionId': 206431,
+          'submissionStatus': 'Active',
+          'submissionTime': '2019-01-10T15:30:54.000Z'
+        }]
+      }, {
+        'submitter': 'FireIce',
+        'submitterId': 15050434,
+        'submissions': [{
+          'submissionId': 206471,
+          'submissionStatus': 'Active',
+          'submissionTime': '2019-01-11T13:21:02.000Z'
+        }]
+      }, {
+        'submitter': 'TonyJ',
+        'submitterId': 8547899,
+        'submissions': [{
+          'submissionId': 206429,
+          'submissionStatus': 'Active',
+          'submissionTime': '2019-01-10T15:22:48.000Z'
+        }]
+      }, {
+        'submitter': 'lazybaer',
+        'submitterId': 23225544,
+        'submissions': [{
+          'submissionId': 206452,
+          'submissionStatus': 'Active',
+          'submissionTime': '2019-01-10T17:56:00.000Z'
+        }]
+      }, {
+        'submitter': 'mess',
+        'submitterId': 305384,
+        'submissions': [{
+          'submissionId': 206470,
+          'submissionStatus': 'Active',
+          'submissionTime': '2019-01-11T13:14:29.000Z'
+        }]
+      }],
       'checkpoints': [],
       'numberOfRegistrants': 5,
       'numberOfSubmissions': 5
@@ -357,35 +318,33 @@ const userResponse = {
     'success': true,
     'status': 200,
     'metadata': null,
-    'content': [
-      {
-        'id': '23225544',
-        'modifiedBy': null,
-        'modifiedAt': '2019-01-15T12:50:57.000Z',
-        'createdBy': null,
-        'createdAt': '2011-03-28T21:03:25.000Z',
-        'handle': submitterHandle,
-        'email': submitterEmail,
-        'firstName': 'F_NAME',
-        'lastName': 'L_NAME',
-        'credential': {
-          'activationCode': 'MV9YSICQ5I',
-          'resetToken': null,
-          'hasPassword': true
-        },
-        'status': 'A',
-        'country': null,
-        'regSource': 'cloudspokes',
-        'utmSource': null,
-        'utmMedium': null,
-        'utmCampaign': null,
-        'roles': null,
-        'ssoLogin': false,
-        'active': true,
-        'profile': null,
-        'emailActive': true
-      }
-    ]
+    'content': [{
+      'id': '23225544',
+      'modifiedBy': null,
+      'modifiedAt': '2019-01-15T12:50:57.000Z',
+      'createdBy': null,
+      'createdAt': '2011-03-28T21:03:25.000Z',
+      'handle': submitterHandle,
+      'email': submitterEmail,
+      'firstName': 'F_NAME',
+      'lastName': 'L_NAME',
+      'credential': {
+        'activationCode': 'MV9YSICQ5I',
+        'resetToken': null,
+        'hasPassword': true
+      },
+      'status': 'A',
+      'country': null,
+      'regSource': 'cloudspokes',
+      'utmSource': null,
+      'utmMedium': null,
+      'utmCampaign': null,
+      'roles': null,
+      'ssoLogin': false,
+      'active': true,
+      'profile': null,
+      'emailActive': true
+    }]
   },
   'version': 'v3'
 }
@@ -435,7 +394,11 @@ const submissionResult = {
     'submitter': {
       'handle': submitterHandle,
       'email': submitterEmail,
-      'rating': {'rating': 0, 'track': null, 'subTrack': null}
+      'rating': {
+        'rating': 0,
+        'track': null,
+        'subTrack': null
+      }
     },
     'submission': {
       'updatedBy': submitterHandle,
@@ -478,6 +441,7 @@ const submissionResult = {
       'numberOfSubmissions': 5
     }
   },
+  'version': 'v3',
   'recipients': [submitterEmail],
   'replyTo': ''
 }
@@ -487,7 +451,11 @@ const reviewResult = {
     'submitter': {
       'handle': submitterHandle,
       'email': submitterEmail,
-      'rating': {'rating': 0, 'track': null, 'subTrack': null}
+      'rating': {
+        'rating': 0,
+        'track': null,
+        'subTrack': null
+      }
     },
     'submission': {
       'updatedBy': submitterHandle,
