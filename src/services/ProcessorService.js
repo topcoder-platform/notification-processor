@@ -37,6 +37,7 @@ async function _fetchSubmissionDetails (submissionId) {
         'subTrack', 'technologies', 'platforms', 'numberOfRegistrants', 'numberOfSubmissions'
       ])
     },
+    version: 'v3',
     recipients: [submitter.email],
     replyTo: ''
   }
