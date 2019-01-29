@@ -43,5 +43,5 @@ module.exports = {
   AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
   AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
 
-  VERSION: process.env.AUTH0_CLIENT_SECRET || 'v3'
+  VERSION: process.env.VERSION || 'v3'
 }
