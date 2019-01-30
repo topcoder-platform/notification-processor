@@ -16,12 +16,18 @@ const helper = require('../common/helper')
 async function _fetchSubmissionDetails (submissionId) {
   const submission = await helper.apiFetchAuthenticated(`${config.SUBMISSION_API_URL}/${submissionId}`)
   const challengeResponse = await helper.apiFetchAuthenticated(`${config.CHALLENGE_API_URL}/${submission.challengeId}`)
-  const challenge = _.get(challengeResponse, 'result.content')
+  let challenge = _.get(challengeResponse, 'result.content')
+
   // Ignore SRMs
   if (challenge.subTrack === 'SRM') {
     throw new Error('SRMs are ignored')
   }
 
+  const challengeFilterResponse = await helper.apiFetchAuthenticated(
+    `${config.CHALLENGE_API_URL}?filter=id%3D${submission.challengeId}`)
+  const challengeFilter = _.get(challengeFilterResponse, 'result.content', [{}])[0]
+  _.merge(challenge, challengeFilter)
+  console.log(challenge)
   // Fetch member details
   const {
     createdBy: submitterHandle
@@ -34,7 +40,8 @@ async function _fetchSubmissionDetails (submissionId) {
       submission,
       challenge: _.pick(challenge, [
         'challengeTitle', 'challengeId', 'submissionEndDate', 'prizes', 'challengeCommunity',
-        'subTrack', 'technologies', 'platforms', 'numberOfRegistrants', 'numberOfSubmissions'
+        'subTrack', 'technologies', 'platforms', 'numberOfRegistrants', 'numberOfSubmissions', 'groupIds', 'isTask',
+        'forumId'
       ])
     },
     version: config.VERSION,
