@@ -49,7 +49,7 @@ jobs:
           command: |
             git clone --branch v1.1 https://github.com/topcoder-platform/tc-deploy-scripts ../buildscript
             cp ./../buildscript/master_deploy.sh .
-            ./master_deploy.sh -d ECS -e PROD  -t latest -s notification-processor -i notification-processor
+            ./master_deploy.sh -d ECS -e PROD  -t latest -s notification-processor -i submission-notification-processor
 workflows:
   version: 2
   build:
