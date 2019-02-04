@@ -10,7 +10,7 @@ const SRMChallengeId = 1111111
 const SRMSubmissionId = 'bbbbbbbb-725d-4973-9778-360918a09bc0'
 const submitterHandle = 'lazybaer'
 const submitterEmail = 'email@domain.com.z'
-const reviewTypeId = '96059e8d-4761-4978-9a14-c86ae6b971c3'
+const reviewTypeId = '68c5a381-c8ab-48af-92a7-7a869a4ee6c3'
 
 const status404SubmissionId = 333333
 const status500SubmissionId = 999999
@@ -497,10 +497,24 @@ const reviewResult = {
       'numberOfRegistrants': 5,
       'numberOfSubmissions': 5
     },
-    'review': reviewType
+    'review': {
+      'score': 100,
+      'updatedBy': 'maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients',
+      'reviewerId': '96059e8d-4761-4978-9a14-c86ae6b971c3',
+      'submissionId': 'bac822d2-725d-4973-9778-360918a09bc0',
+      'createdBy': 'maE2maBSv9fRVHjSlC31LFZSq6VhhZqC@clients',
+      'resource': 'review',
+      'created': '2019-01-10T17:56:04.223Z',
+      'scoreCardId': 30001850,
+      'typeId': '68c5a381-c8ab-48af-92a7-7a869a4ee6c3',
+      'id': 'c09ab9bd-9acf-40a4-8d6f-db50e6237a4d',
+      'updated': '2019-01-10T17:56:04.223Z'
+    },
+    'reviewType': reviewType
   },
   'recipients': [submitterEmail],
-  'replyTo': ''
+  'replyTo': '',
+  'version': 'v3'
 }
 
 const messageRequiredFields = ['topic', 'originator', 'timestamp', 'mime-type', 'payload.resource']
