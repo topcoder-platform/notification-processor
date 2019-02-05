@@ -7,13 +7,35 @@ const config = require('config')
 const logger = require('../common/logger')
 const helper = require('../common/helper')
 
+let groupsCache = {}
+
+/**
+ * _fetchGroups - description
+ *
+ * @param  groupsIds description
+ * @returns {Promise<>}
+ * @private
+ */
+async function _fetchGroups(groupsIds) {
+  let newGroups = _.zipObject(groupsIds, [])
+  _.merge(newGroups, groupsCache)
+
+  _.forEach(newGroups, async(groupId, group) => {
+    if (!group) {
+      group = await helper.apiFetchAuthenticated(`${config.SUBMISSION_API_URL}/${groupId}`)
+    }
+
+    groupsCache[groupId] = group
+  })
+}
+
 /**
  * Fetch submission details
  * @param submissionId
  * @returns {Promise<>}
  * @private
  */
-async function _fetchSubmissionDetails (submissionId) {
+async function _fetchSubmissionDetails(submissionId) {
   const submission = await helper.apiFetchAuthenticated(`${config.SUBMISSION_API_URL}/${submissionId}`)
   const challengeResponse = await helper.apiFetchAuthenticated(`${config.CHALLENGE_API_URL}/${submission.challengeId}`)
   let challenge = _.get(challengeResponse, 'result.content')
@@ -27,7 +49,10 @@ async function _fetchSubmissionDetails (submissionId) {
     `${config.CHALLENGE_API_URL}?filter=id%3D${submission.challengeId}`)
   const challengeFilter = _.get(challengeFilterResponse, 'result.content', [{}])[0]
   _.merge(challenge, challengeFilter)
-  console.log(challenge)
+  _fetchGroups(_.get(challenge, "groupIds", []))
+  console.log(groupsCache)
+
+  //console.log(challenge)
   // Fetch member details
   const {
     createdBy: submitterHandle
@@ -56,7 +81,7 @@ async function _fetchSubmissionDetails (submissionId) {
  * @returns {Promise<>}
  * @private
  */
-async function _fetchUserDetails (handle) {
+async function _fetchUserDetails(handle) {
   const memberResponse = await helper.apiFetch(`${config.MEMBER_API_URL}/${handle}`)
   const member = _.get(memberResponse, 'result.content')
   const userResponse = await helper.apiFetchAuthenticated(`${config.USER_API_URL}/?filter=id=${member.userId}`)
@@ -64,7 +89,7 @@ async function _fetchUserDetails (handle) {
   return {
     handle,
     email: _.get(userResponse, 'result.content[0].email', ''),
-    rating: member.maxRating
+      rating: member.maxRating
   }
 }
 
@@ -74,7 +99,7 @@ async function _fetchUserDetails (handle) {
  * @returns {Promise<>}
  * @private
  */
-async function _fetchReviewTypeDetails (typeId) {
+async function _fetchReviewTypeDetails(typeId) {
   const reviewResponse = await helper.apiFetchAuthenticated(`${config.REVIEW_TYPE_API_URL}/${typeId}`)
   return reviewResponse
 }
@@ -84,7 +109,7 @@ async function _fetchReviewTypeDetails (typeId) {
  * @param {Object} message the message
  * @returns {Promise<>}
  */
-async function processSubmission (message) {
+async function processSubmission(message) {
   // Fetch submission details
   const {
     id
@@ -113,7 +138,7 @@ processSubmission.schema = {
  * @param {Object} message the message
  * @returns {Promise<>}
  */
-async function processReview (message) {
+async function processReview(message) {
   const {
     submissionId, typeId
   } = message.payload
@@ -123,8 +148,8 @@ async function processReview (message) {
     ...submissionDetails,
     data: {
       ...submissionDetails.data,
-      reviewType,
-      review: message.payload
+        reviewType,
+        review: message.payload
     }
   }
 }
