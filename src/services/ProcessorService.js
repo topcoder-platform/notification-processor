@@ -4,6 +4,7 @@
 const _ = require('lodash')
 const Joi = require('joi')
 const config = require('config')
+const communitiesMetadata = require('../communitiesMetadata.json')
 const logger = require('../common/logger')
 const helper = require('../common/helper')
 
@@ -28,14 +29,26 @@ async function _fetchSubmissionDetails (submissionId) {
   } = submission
   const submitter = await _fetchUserDetails(submitterId)
 
+  // Populate communities & community details
+  const challengeESResponse = await helper.apiFetchAuthenticated(`${config.CHALLENGE_API_URL}?filter=id=${submission.challengeId}`)
+  const challengeES = _.get(challengeESResponse, 'result.content[0]', [])
+  const challengeGroups = _.get(challengeES, 'groupIds', []).map(id => id.toString())
+  const challengeCommunities = _.filter(communitiesMetadata, c => _.intersection(c.groupIds, challengeGroups).length > 0)
+  const communities = {}
+  _.each(challengeCommunities, (community) => {
+    communities[community.communityId] = community
+  })
   return {
     data: {
       submitter,
       submission,
-      challenge: _.pick(challenge, [
-        'challengeTitle', 'challengeId', 'submissionEndDate', 'prizes', 'challengeCommunity',
-        'subTrack', 'technologies', 'platforms', 'numberOfRegistrants', 'numberOfSubmissions'
-      ])
+      challenge: {
+        ..._.pick(challenge, [
+          'challengeTitle', 'challengeId', 'submissionEndDate', 'prizes', 'challengeCommunity',
+          'subTrack', 'technologies', 'platforms', 'numberOfRegistrants', 'numberOfSubmissions'
+        ]),
+        communities
+      }
     },
     version: config.VERSION,
     recipients: [submitter.email],
