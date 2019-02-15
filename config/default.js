@@ -43,9 +43,9 @@ module.exports = {
 
   AUTH0_URL: process.env.AUTH0_URL || 'https://api.topcoder.com/v5/auth', // Auth0 credentials for M2M token
   AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE || 'https://www.topcoder-dev.com',
-  TOKEN_CACHE_TIME: process.env.TOKEN_CACHE_TIME,
   AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
   AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
+  AUTH0_PROXY_SERVER_URL: process.env.AUTH0_PROXY_SERVER_URL,
 
   VERSION: process.env.VERSION || 'v3'
 }
