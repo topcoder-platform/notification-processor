@@ -8,3 +8,4 @@ coverage
 docker/api.env
 *.key
 *cert
+dev-submission-notification-processor-*.json
