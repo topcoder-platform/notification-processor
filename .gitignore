@@ -8,3 +8,5 @@ coverage
 docker/api.env
 *.key
 *cert
+*-submission-notification-processor-*.json
+*-global-appvar.json
