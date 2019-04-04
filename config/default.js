@@ -16,17 +16,17 @@ module.exports = {
   KAFKA_CONSUMER_GROUP_ID: process.env.KAFKA_GROUP_ID || 'tc-submission-notification-processor-group',
   // below are used for secure Kafka connection, they are optional
   // for the local Kafka, they are not needed
-  KAFKA_CONSUMER_CLIENT_CERT: process.env.KAFKA_CONSUMER_CLIENT_CERT || fileIfExists(
+  KAFKA_CONSUMER_CLIENT_CERT: process.env.KAFKA_CLIENT_CERT || fileIfExists(
     `${__dirname}/../kafkadev.cert`),
-  KAFKA_CONSUMER_CLIENT_CERT_KEY: process.env.KAFKA_CONSUMER_CLIENT_CERT_KEY || fileIfExists(
+  KAFKA_CONSUMER_CLIENT_CERT_KEY: process.env.KAFKA_CLIENT_CERT_KEY || fileIfExists(
     `${__dirname}/../kafkadev.key`),
   // Kafka producer config
   KAFKA_PRODUCER_URL: process.env.KAFKA_URL || 'localhost:9092',
   // below are used for secure Kafka connection, they are optional
   // for the local Kafka, they are not needed
-  KAFKA_PRODUCER_CLIENT_CERT: process.env.KAFKA_PRODUCER_CLIENT_CERT || fileIfExists(
+  KAFKA_PRODUCER_CLIENT_CERT: process.env.KAFKA_CLIENT_CERT || fileIfExists(
     `${__dirname}/../kafkadev.cert`),
-  KAFKA_PRODUCER_CLIENT_CERT_KEY: process.env.KAFKA_PRODUCER_CLIENT_CERT_KEY || fileIfExists(
+  KAFKA_PRODUCER_CLIENT_CERT_KEY: process.env.KAFKA_CLIENT_CERT_KEY || fileIfExists(
     `${__dirname}/../kafkadev.key`),
 
   CREATE_NOTIFICATION_TOPIC: process.env.CREATE_NOTIFICATION_TOPIC || 'submission.notification.create',
@@ -43,9 +43,9 @@ module.exports = {
 
   AUTH0_URL: process.env.AUTH0_URL || 'https://api.topcoder.com/v5/auth', // Auth0 credentials for M2M token
   AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE || 'https://www.topcoder-dev.com',
-  TOKEN_CACHE_TIME: process.env.TOKEN_CACHE_TIME,
   AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
   AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
+  AUTH0_PROXY_SERVER_URL: process.env.AUTH0_PROXY_SERVER_URL,
 
   VERSION: process.env.VERSION || 'v3'
 }
