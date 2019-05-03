@@ -24,9 +24,9 @@ async function _fetchSubmissionDetails (submissionId) {
 
   // Fetch member details
   const {
-    createdBy: submitterHandle
+    memberId: submitterId
   } = submission
-  const submitter = await _fetchUserDetails(submitterHandle)
+  const submitter = await _fetchUserDetails(submitterId)
 
   return {
     data: {
@@ -45,18 +45,20 @@ async function _fetchSubmissionDetails (submissionId) {
 
 /**
  * Fetch user details
- * @param handle User handle
+ * @param userId User ID
  * @returns {Promise<>}
  * @private
  */
-async function _fetchUserDetails (handle) {
-  const memberResponse = await helper.apiFetch(`${config.MEMBER_API_URL}/${handle}`)
+async function _fetchUserDetails (userId) {
+  const userResponse = await helper.apiFetchAuthenticated(`${config.USER_API_URL}/?filter=id=${userId}`)
+  const user = _.get(userResponse, 'result.content[0]')
+  if (!user) throw new Error(`User with ID ${userId} could not be found`)
+  const memberResponse = await helper.apiFetch(`${config.MEMBER_API_URL}/${user.handle}`)
   const member = _.get(memberResponse, 'result.content')
-  const userResponse = await helper.apiFetchAuthenticated(`${config.USER_API_URL}/?filter=id=${member.userId}`)
 
   return {
-    handle,
-    email: _.get(userResponse, 'result.content[0].email', ''),
+    handle: _.get(user, 'handle'),
+    email: _.get(user, 'email'),
     rating: member.maxRating
   }
 }
