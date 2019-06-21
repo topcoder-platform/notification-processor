@@ -1,8 +1,8 @@
-# Topcoder - Challenge Resource Processor Verification
+# Topcoder - Submission Notification Processor
 
 - start kafka server, start processor app
-- start kafka-console-consumer to validate output messages on 'test.email'
-  `bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test.email`
+- start kafka-console-consumer to validate output messages on 'submission.notificatin.send'
+  `bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic submission.notificatin.send`
 - start kafka-console-producer to write messages to `submission.notification.create` topic:
   `bin/kafka-console-producer.sh --broker-list localhost:9092 --topic submission.notification.create`
 - write message of `Create Submission`:
@@ -16,7 +16,7 @@ info: Successfully processed the message and published the result on kafka
 
 ```json
 {
-  "topic":"test.email",
+  "topic":"submission.notification.send",
   "originator":"tc-submission-notification-processor",
   "timestamp":"2019-01-15T19:02:38.717Z",
   "mime-type":"application/json",
@@ -102,7 +102,7 @@ info: Successfully processed the message and published the result on kafka
 
 ```json
 {
-  "topic":"test.email",
+  "topic":"submission.notification.send",
   "originator":"tc-submission-notification-processor",
   "timestamp":"2019-01-15T19:07:10.173Z",
   "mime-type":"application/json",
@@ -200,7 +200,7 @@ info: Successfully processed the message and published the result on kafka
 
 ```json
 {
-  "topic":"test.email",
+  "topic":"submission.notification.send",
   "originator":"tc-submission-notification-processor",
   "timestamp":"2019-01-15T18:48:37.172Z",
   "mime-type":"application/json",
@@ -282,9 +282,4 @@ info: Successfully processed the message and published the result on kafka
   `[ { - a b c`
 - then in the app console, you will see error messages
 
-
-
-# Topcoder - Challenge registration processor updates Verification
-- UNIT TESTS see [README.md](./README.md) about how to run unit test and run unit test with coverage report.
-
-
+- go to https://app.lightstep.com/<Your_Project>/explorer and https://app.datadoghq.com/apm/traces to verify trace data in Lightstep and Datadog respectively. Currently, SignalFX is disabled so you don't need to verify it.

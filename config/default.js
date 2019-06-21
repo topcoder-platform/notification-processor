@@ -33,7 +33,7 @@ module.exports = {
   UPDATE_NOTIFICATION_TOPIC: process.env.UPDATE_NOTIFICATION_TOPIC || 'submission.notification.update',
   PRODUCER_TOPIC: process.env.PRODUCER_TOPIC || 'submission.notification.send',
 
-  INCLUDE_UPDATES: process.env.INCLUDE_UPDATES || false,
+  INCLUDE_UPDATES: process.env.INCLUDE_UPDATES || true,
 
   CHALLENGE_API_URL: process.env.CHALLENGE_API_URL || 'https://api.topcoder-dev.com/v4/challenges',
   SUBMISSION_API_URL: process.env.SUBMISSION_API_URL || 'https://api.topcoder-dev.com/v5/submissions',
@@ -41,11 +41,34 @@ module.exports = {
   USER_API_URL: process.env.USER_API_URL || 'https://api.topcoder-dev.com/v3/users',
   REVIEW_TYPE_API_URL: process.env.REVIEW_TYPE_API_URL || 'https://api.topcoder-dev.com/v5/reviewTypes',
 
-  AUTH0_URL: process.env.AUTH0_URL || 'https://api.topcoder.com/v5/auth', // Auth0 credentials for M2M token
-  AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE || 'https://www.topcoder-dev.com',
+  AUTH0_URL: process.env.AUTH0_URL || 'https://topcoder-dev.auth0.com/oauth/token',
+  AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE || 'https://m2m.topcoder-dev.com/',
+  TOKEN_CACHE_TIME: process.env.TOKEN_CACHE_TIME,
   AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
   AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
   AUTH0_PROXY_SERVER_URL: process.env.AUTH0_PROXY_SERVER_URL,
 
-  VERSION: process.env.VERSION || 'v3'
+  VERSION: process.env.VERSION || 'v3',
+
+  tracing: {
+    dataDogEnabled: process.env.DATADOG_ENABLED ? process.env.DATADOG_ENABLED === 'true' : true,
+    lightStepEnabled: process.env.LIGHTSTEP_ENABLED ? process.env.LIGHTSTEP_ENABLED === 'true' : true,
+    signalFXEnabled: process.env.SIGNALFX_ENABLED ? process.env.SIGNALFX_ENABLED === 'true' : false,
+
+    dataDog: {
+      service: process.env.DATADOG_SERVICE_NAME || 'tc-submission-notification-processor',
+      hostname: process.env.DD_TRACE_AGENT_HOSTNAME
+    },
+
+    lightStep: {
+      access_token: process.env.LIGHTSTEP_ACCESS_TOKEN,
+      component_name: process.env.LIGHTSTEP_COMPONENT_NAME || 'tc-submission-notification-processor'
+    },
+
+    signalFX: {
+      service: process.env.SIGNALFX_SERVICE_NAME || 'tc-submission-notification-processor',
+      accessToken: process.env.SIGNALFX_ACCESS_TOKEN,
+      url: `https://${process.env.SIGNALFX_TRACE_AGENT_HOSTNAME}:9080/v1/trace`
+    }
+  }
 }

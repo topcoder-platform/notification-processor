@@ -73,7 +73,7 @@ describe('Submission Notification Processor Unit Tests', () => {
   })
 
   for (const testCase of Object.keys(testCases)) {
-    const {testMessage, requiredFields, integerFields, stringFields, methodName, expectedResult} = testCases[testCase]
+    const { testMessage, requiredFields, integerFields, stringFields, methodName, expectedResult } = testCases[testCase]
     it(`test ${testCase} with valid message(response 200 status)`, async () => {
       const result = await processorService[methodName](testMessage)
       result.should.deepEqual(expectedResult)
@@ -81,7 +81,7 @@ describe('Submission Notification Processor Unit Tests', () => {
     })
     if (invalidSubmissions) {
       for (const invalidSubmission of invalidSubmissions) {
-        const {invalidSubmissionId, invalidStatus} = invalidSubmission
+        const { invalidSubmissionId, invalidStatus } = invalidSubmission
         it(`test ${testCase} with invalid submission id that returns ${invalidStatus}`, async () => {
           let message = _.cloneDeep(testMessage)
           setSubmissionId(message, invalidSubmissionId)

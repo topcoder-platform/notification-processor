@@ -20,20 +20,22 @@ const {
   SRMChallengeId,
   SRMChallengeResponse,
   SRMSubmissionId,
-  SRMSubmissionResponse
+  SRMSubmissionResponse,
+  m2mToken
 } = require('../common/testData')
 
 prepare((done) => {
   // called before loading of test cases
   nock.disableNetConnect()
   nock.enableNetConnect(`127.0.0.1`)
+  nock.enableNetConnect(config.AUTH0_URL)
   nock.enableNetConnect(config.KAFKA_CONSUMER_URL)
   nock.enableNetConnect(config.KAFKA_PRODUCER_URL)
   // mock m2m token request
   nock(config.AUTH0_URL)
     .persist()
     .post(() => true)
-    .reply(200, {access_token: 'token'})
+    .reply(200, { access_token: m2mToken })
   // mock submission api requests
   nock(config.SUBMISSION_API_URL)
     .persist()

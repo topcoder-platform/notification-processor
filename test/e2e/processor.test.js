@@ -8,8 +8,8 @@ const Kafka = require('no-kafka')
 const config = require('config')
 const should = require('should')
 const logger = require('../../src/common/logger')
-const {getKafkaConsumerOptions} = require('../../src/common/utils')
-const {sleep} = require('../common/helper')
+const { getKafkaConsumerOptions } = require('../../src/common/utils')
+const { sleep } = require('../common/helper')
 const {
   testCases
 } = require('../common/testData')
@@ -156,12 +156,12 @@ describe('Challenge Registration Processor e2e Tests', () => {
     const healthcheckEndpoint = `http://localhost:${process.env.PORT || 3000}/health`
     let result = await request.get(healthcheckEndpoint)
     should.equal(result.status, 200)
-    should.deepEqual(result.body, {checksRun: 1})
+    should.deepEqual(result.body, { checksRun: 1 })
     debugLogs.should.match(/connected=true/)
   })
 
   it('Should handle invalid json message', async () => {
-    const {testMessage} = testCases['Submission Create Notification']
+    const { testMessage } = testCases['Submission Create Notification']
     await producer.send({
       topic: testMessage.topic,
       message: {
@@ -173,7 +173,7 @@ describe('Challenge Registration Processor e2e Tests', () => {
   })
 
   it('Should handle wrong topic message', async () => {
-    const {testMessage} = testCases['Submission Create Notification']
+    const { testMessage } = testCases['Submission Create Notification']
     let message = _.cloneDeep(testMessage)
     message.topic = 'invalid'
     await producer.send({
@@ -188,7 +188,7 @@ describe('Challenge Registration Processor e2e Tests', () => {
   })
 
   for (const testCase of Object.keys(testCases)) {
-    const {testMessage, requiredFields, integerFields, stringFields} = testCases[testCase]
+    const { testMessage, requiredFields, integerFields, stringFields } = testCases[testCase]
     it(`test ${testCase} with valid message(response 200 status)`, async () => {
       await sendMessage(testMessage)
       await waitJob()

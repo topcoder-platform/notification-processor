@@ -5,6 +5,9 @@
 - nodejs https://nodejs.org/en/ (v8+)
 - Kafka
 - Docker, Docker Compose
+- DataDog
+- LightStep
+- SignalFX
 
 ## Configuration
 
@@ -44,6 +47,14 @@ The following parameters can be set in config files or in env variables:
 - AUTH0_CLIENT_ID: Auth0 client id for M2M token
 - AUTH0_CLIENT_SECRET: Auth0 client secret for M2M token
 
+- tracing object will contain all configuration relate to integrate open tracing.
+  1. dataDogEnabled, whether data dog tracing is enabled
+  2. lightStepEnabled, whether light step tracing is enabled
+  3. signalFXEnabled, whether singal fx tracing is enabled
+  4. dataDog, all related configuration to initialize data dog tracer, refer https://datadog.github.io/dd-trace-js/ for more information
+  5. lightStep, all related configuration to initialize light step tracer, refer https://github.com/lightstep/lightstep-tracer-javascript for more information
+  6. signalFX, all related configuration to initialize signal fx tracer, refer https://github.com/signalfx/signalfx-nodejs-tracing/blob/master/docs/API.md#advanced-configuration for more information
+
 Also note that there is a `/health` endpoint that checks for the health of the app. This sets up an expressjs server and listens on the environment variable `PORT`. It's not part of the configuration file and needs to be passed as an environment variable
 
 Configuration for the tests is at `config/test.js`. Following parameters need to be set via environment variables or directly in config file
@@ -70,12 +81,16 @@ Configuration for the tests is at `config/test.js`. Following parameters need to
 - use another terminal, go to same directory, create some topics:
   `bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic submission.notification.create`
   `bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic submission.notification.update`
-   `bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test.email`
+   `bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic submission.notification.send`
 - verify that the topics are created:
   `bin/kafka-topics.sh --list --zookeeper localhost:2181`,
   it should list out the created topics
 
 ## Local deployment
+
+- go to https://www.datadoghq.com/, register a free trial account. refer https://app.datadoghq.com/account/settings#agent to install and start Datadog agent. refer https://docs.datadoghq.com/agent/apm/?tab=agent630 to ensure APM is enabled in your Datadog agent. refer https://app.datadoghq.com/logs/onboarding/server to ensure log is enabled in your Datadog agent.
+- go to https://go.lightstep.com/tracing.html, register a free trial account, then you will got an API token which is used as configuration value.
+- go to https://www.signalfx.com/, register a free trial account, login the web app and click integrations menu, follow info in `SignalFx SmartAgent` to install and start agent. On top right user avatar, choose `Organization Settings` and `Access Tokens` to get the API token.
 
 - install dependencies `npm i`
 - run code lint check `npm run lint`, running `npm run lint:fix` can fix some lint errors if any
@@ -83,6 +98,8 @@ Configuration for the tests is at `config/test.js`. Following parameters need to
 - to start with production config `npm runt start:prod`
 
 ## Local Deployment with Docker
+
+Refer Local deployment to setup DataDog/LightStep/SignalFX
 
 To run the processor using docker, follow the below steps
 
@@ -109,7 +126,7 @@ To run unit tests alone
 npm run test
 ```
 
-To run unit tests with coverage report, you can check generated coverage report in coverage folder and coverage for `src/services/ProcessorService.js` is 100%.
+To run unit tests with coverage report, you can check generated coverage report in coverage folder.
 
 ```
 npm run cov

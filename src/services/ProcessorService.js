@@ -7,16 +7,30 @@ const config = require('config')
 const communitiesMetadata = require('../communitiesMetadata.json')
 const logger = require('../common/logger')
 const helper = require('../common/helper')
+const tracer = require('../common/tracer')
 
 /**
  * Fetch submission details
  * @param submissionId
+ * @param {Object} parentSpan Span object to handle
  * @returns {Promise<>}
  * @private
  */
-async function _fetchSubmissionDetails (submissionId) {
+async function _fetchSubmissionDetails (submissionId, parentSpan) {
+  let submissionSpan = tracer.startChildSpans('getSubmission', parentSpan)
+  submissionSpan.setTag('submissionId', submissionId)
+
   const submission = await helper.apiFetchAuthenticated(`${config.SUBMISSION_API_URL}/${submissionId}`)
+
+  submissionSpan.finish()
+
+  let challengeSpan = tracer.startChildSpans('getChallenge', parentSpan)
+  challengeSpan.setTag('challengeId', submission.challengeId)
+
   const challengeResponse = await helper.apiFetchAuthenticated(`${config.CHALLENGE_API_URL}/${submission.challengeId}`)
+
+  challengeSpan.finish()
+
   const challenge = _.get(challengeResponse, 'result.content')
   // Ignore SRMs
   if (challenge.subTrack === 'SRM') {
@@ -27,10 +41,16 @@ async function _fetchSubmissionDetails (submissionId) {
   const {
     memberId: submitterId
   } = submission
-  const submitter = await _fetchUserDetails(submitterId)
+  const submitter = await _fetchUserDetails(submitterId, parentSpan)
 
   // Populate communities & community details
+  let challengeESSpan = tracer.startChildSpans('getChallengeES', parentSpan)
+  challengeESSpan.setTag('challengeId', submission.challengeId)
+
   const challengeESResponse = await helper.apiFetchAuthenticated(`${config.CHALLENGE_API_URL}?filter=id=${submission.challengeId}`)
+
+  challengeESSpan.finish()
+
   const challengeES = _.get(challengeESResponse, 'result.content[0]', [])
   const challengeGroups = _.get(challengeES, 'groupIds', []).map(id => id.toString())
   const challengeCommunities = _.filter(communitiesMetadata, c => _.intersection(c.groupIds, challengeGroups).length > 0)
@@ -59,14 +79,28 @@ async function _fetchSubmissionDetails (submissionId) {
 /**
  * Fetch user details
  * @param userId User ID
+ * @param {Object} parentSpan Span object to handle
  * @returns {Promise<>}
  * @private
  */
-async function _fetchUserDetails (userId) {
+async function _fetchUserDetails (userId, parentSpan) {
+  let userSpan = tracer.startChildSpans('getUser', parentSpan)
+  userSpan.setTag('userId', userId)
+
   const userResponse = await helper.apiFetchAuthenticated(`${config.USER_API_URL}/?filter=id=${userId}`)
+
+  userSpan.finish()
+
   const user = _.get(userResponse, 'result.content[0]')
   if (!user) throw new Error(`User with ID ${userId} could not be found`)
+
+  let memberSpan = tracer.startChildSpans('getUserRank', parentSpan)
+  memberSpan.setTag('handle', user.handle)
+
   const memberResponse = await helper.apiFetch(`${config.MEMBER_API_URL}/${user.handle}`)
+
+  memberSpan.finish()
+
   const member = _.get(memberResponse, 'result.content')
 
   return {
@@ -79,26 +113,40 @@ async function _fetchUserDetails (userId) {
 /**
  * Fetch review details
  * @param typeId Review type ID
+ * @param {Object} parentSpan Span object to handle
  * @returns {Promise<>}
  * @private
  */
-async function _fetchReviewTypeDetails (typeId) {
+async function _fetchReviewTypeDetails (typeId, parentSpan) {
+  let reviewTypeSpan = tracer.startChildSpans('getReviewType', parentSpan)
+  reviewTypeSpan.setTag('typeId', typeId)
+
   const reviewResponse = await helper.apiFetchAuthenticated(`${config.REVIEW_TYPE_API_URL}/${typeId}`)
+
+  reviewTypeSpan.finish()
+
   return reviewResponse
 }
 
 /**
  * Handle 'submission' message
  * @param {Object} message the message
+ * @param {Object} span the Span object
  * @returns {Promise<>}
  */
-async function processSubmission (message) {
+async function processSubmission (message, span) {
+  // Span is undefined during unittests. Create empty Spans object in order to avoid errors
+  if (!span) {
+    span = require('../common/tracer').startSpans('ProcessorService.processSubmission')
+  }
   // Fetch submission details
   const {
     id
   } = message.payload
+  span.setTag('payload.id', id)
+  span.setTag('payload.resource', message.payload.resource)
 
-  return _fetchSubmissionDetails(id)
+  return _fetchSubmissionDetails(id, span)
 }
 
 processSubmission.schema = {
@@ -119,14 +167,25 @@ processSubmission.schema = {
 /**
  * Handle 'review' message
  * @param {Object} message the message
+ * @param {Object} span the Span object
  * @returns {Promise<>}
  */
-async function processReview (message) {
+async function processReview (message, span) {
+  // Span is undefined during unittests. Create empty Spans object in order to avoid errors
+  if (!span) {
+    span = require('../common/tracer').startSpans('ProcessorService.processReview')
+  }
+
   const {
     submissionId, typeId
   } = message.payload
-  const reviewType = await _fetchReviewTypeDetails(typeId)
-  const submissionDetails = await _fetchSubmissionDetails(submissionId)
+
+  span.setTag('payload.submissionId', submissionId)
+  span.setTag('payload.typeId', typeId)
+  span.setTag('payload.resource', message.payload.resource)
+
+  const reviewType = await _fetchReviewTypeDetails(typeId, span)
+  const submissionDetails = await _fetchSubmissionDetails(submissionId, span)
   return {
     ...submissionDetails,
     data: {
