@@ -8,6 +8,7 @@ install_dependency: &install_dependency
             apk update
             apk add --no-cache bash curl jq py-pip sudo
             apk upgrade
+            sudo pip install --upgrade pip
             sudo pip install awscli --upgrade
             sudo pip install docker-compose
 
