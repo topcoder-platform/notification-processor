@@ -49,6 +49,8 @@ prepare((done) => {
     .persist()
     .get(`/${challengeId}`)
     .reply(200, challengeResponse)
+    .get(`?filter=id=${challengeId}`)
+    .reply(200, challengeResponse)
     .get(`/${SRMChallengeId}`)
     .reply(200, SRMChallengeResponse)
 
