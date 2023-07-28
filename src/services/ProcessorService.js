@@ -101,7 +101,7 @@ async function processSubmission (message) {
   return _fetchSubmissionDetails(id)
 }
 
-processSubmission.schema = {
+processSubmission.schema = Joi.object({
   message: Joi.object().keys({
     topic: Joi.string().required(),
     originator: Joi.string().required(),
@@ -114,7 +114,7 @@ processSubmission.schema = {
       memberId: Joi.number().integer().min(1).required()
     }).unknown(true).required()
   }).required()
-}
+}).required()
 
 /**
  * Handle 'review' message
@@ -137,7 +137,7 @@ async function processReview (message) {
   }
 }
 
-processReview.schema = {
+processReview.schema = Joi.object({
   message: Joi.object().keys({
     topic: Joi.string().required(),
     originator: Joi.string().required(),
@@ -150,7 +150,7 @@ processReview.schema = {
       reviewerId: Joi.string().uuid().required()
     }).unknown(true).required()
   }).required()
-}
+}).required()
 
 // Exports
 module.exports = {

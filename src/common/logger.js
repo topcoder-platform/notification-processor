@@ -4,18 +4,19 @@
 
 const _ = require('lodash')
 const Joi = require('joi')
-const winston = require('winston')
+const { createLogger, format, transports } = require('winston')
 const util = require('util')
 const config = require('config')
 const getParams = require('get-parameter-names')
 
-const transports = []
-
-if (!JSON.parse(config.DISABLE_LOGGING)) {
-  transports.push(new (winston.transports.Console)({ level: config.LOG_LEVEL, colorize: true }))
-}
-
-const logger = new (winston.Logger)({ transports })
+const logger = createLogger({
+  level: config.LOG_LEVEL,
+  transports: [
+    new transports.Console({
+      format: format.printf((info) => `${info.level}: ${JSON.stringify(info.message)}`)
+    })
+  ]
+})
 
 /**
  * Log error details with signature
@@ -33,7 +34,7 @@ logger.logFullError = (err, signature) => {
 
   // If error is not logged, log it
   if (!err.logged) {
-    logger.error(err.stack)
+    logger.error(err)
     err.logged = true
   }
 }
