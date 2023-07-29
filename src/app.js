@@ -61,7 +61,6 @@ const dataHandler = async (messageSet, topic, partition) => {
         details = await processorService.processReview(messageJSON)
       } else if (resource === 'submission') {
         details = await processorService.processSubmission(messageJSON)
-        logger.debug(`details ${details}`)
       }
       // Send details with producer
       await producer.send({

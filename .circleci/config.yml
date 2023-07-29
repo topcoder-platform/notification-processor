@@ -77,7 +77,6 @@ workflows:
             branches:
               only:
                 - develop
-                - PLAT/3210
       - "build-prod":
           context : org-global
           filters:
