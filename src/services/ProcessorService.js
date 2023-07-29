@@ -4,7 +4,6 @@
 const _ = require('lodash')
 const Joi = require('joi')
 const config = require('config')
-const communitiesMetadata = require('../communitiesMetadata.json')
 const logger = require('../common/logger')
 const helper = require('../common/helper')
 
@@ -14,45 +13,35 @@ const helper = require('../common/helper')
  * @returns {Promise<>}
  * @private
  */
-async function _fetchSubmissionDetails (submissionId) {
-  const submission = await helper.apiFetchAuthenticated(`${config.SUBMISSION_API_URL}/${submissionId}`)
-  const challengeResponse = await helper.apiFetchAuthenticated(`${config.CHALLENGE_API_URL}/${submission.challengeId}`)
-  const challenge = _.get(challengeResponse, 'result.content')
+async function _fetchSubmissionDetails (submissionId, v5ChallengeId, memberId) {
+  if (!v5ChallengeId || !memberId) {
+    const submission = await helper.apiFetchAuthenticated(`${config.SUBMISSION_API_URL}/${submissionId}`)
+    v5ChallengeId = submission.v5ChallengeId
+    memberId = submission.memberId
+  }
+  const challenge = await helper.apiFetchAuthenticated(`${config.CHALLENGE_API_URL}/${v5ChallengeId}`)
   // Ignore SRMs
-  if (challenge.subTrack === 'SRM') {
+  if (challenge.legacy.subTrack === 'SRM') {
     throw new Error('SRMs are ignored')
   }
 
   // Fetch member details
-  const {
-    memberId: submitterId
-  } = submission
-  const submitter = await _fetchUserDetails(submitterId)
+  const submitter = await _fetchUserDetails(memberId)
 
-  // Populate communities & community details
-  const challengeESResponse = await helper.apiFetchAuthenticated(`${config.CHALLENGE_API_URL}?filter=id=${submission.challengeId}`)
-  const challengeES = _.get(challengeESResponse, 'result.content[0]', [])
-  const challengeGroups = _.get(challengeES, 'groupIds', []).map(id => id.toString())
-  const challengeCommunities = _.filter(communitiesMetadata, c => _.intersection(c.groupIds, challengeGroups).length > 0)
-  const communities = {}
-  _.each(challengeCommunities, (community) => {
-    communities[community.communityId] = community
-  })
   return {
     data: {
-      submitter,
-      submission,
+      submitter: {
+        handle: submitter.handle
+      },
+      submission: {
+        id: submissionId
+      },
       challenge: {
-        ..._.pick(challenge, [
-          'challengeTitle', 'challengeId', 'submissionEndDate', 'prizes', 'challengeCommunity',
-          'subTrack', 'technologies', 'platforms', 'numberOfRegistrants', 'numberOfSubmissions'
-        ]),
-        communities
+        challengeTitle: challenge.name
       }
     },
     version: config.VERSION,
-    recipients: [submitter.email],
-    replyTo: ''
+    recipients: [submitter.email]
   }
 }
 
@@ -63,16 +52,12 @@ async function _fetchSubmissionDetails (submissionId) {
  * @private
  */
 async function _fetchUserDetails (userId) {
-  const userResponse = await helper.apiFetchAuthenticated(`${config.USER_API_URL}/?filter=id=${userId}`)
-  const user = _.get(userResponse, 'result.content[0]')
-  if (!user) throw new Error(`User with ID ${userId} could not be found`)
-  const memberResponse = await helper.apiFetch(`${config.MEMBER_API_URL}/${user.handle}`)
-  const member = _.get(memberResponse, 'result.content')
+  const user = await helper.apiFetchAuthenticated(`${config.MEMBER_API_URL}/?userId=${userId}&fields=handle,email`)
+  if (!user.length) throw new Error(`User with ID ${userId} could not be found`)
 
   return {
-    handle: _.get(user, 'handle'),
-    email: _.get(user, 'email'),
-    rating: member.maxRating
+    handle: _.get(user, '[0].handle'),
+    email: _.get(user, '[0].email')
   }
 }
 
@@ -95,10 +80,12 @@ async function _fetchReviewTypeDetails (typeId) {
 async function processSubmission (message) {
   // Fetch submission details
   const {
-    id
+    id: submissionId,
+    v5ChallengeId,
+    memberId
   } = message.payload
 
-  return _fetchSubmissionDetails(id)
+  return _fetchSubmissionDetails(submissionId, v5ChallengeId, memberId)
 }
 
 processSubmission.schema = Joi.object({
@@ -110,7 +97,7 @@ processSubmission.schema = Joi.object({
     payload: Joi.object().keys({
       resource: Joi.string().valid('submission').required(),
       id: Joi.string().uuid().required(),
-      challengeId: Joi.number().integer().min(1).required(),
+      v5ChallengeId: Joi.string().uuid().required(),
       memberId: Joi.number().integer().min(1).required()
     }).unknown(true).required()
   }).required()
@@ -147,7 +134,9 @@ processReview.schema = Joi.object({
       resource: Joi.string().valid('review').required(),
       id: Joi.string().uuid().required(),
       submissionId: Joi.string().uuid().required(),
-      reviewerId: Joi.string().uuid().required()
+      reviewerId: Joi.string().uuid().required(),
+      typeId: Joi.string().uuid().required(),
+      score: Joi.number().required()
     }).unknown(true).required()
   }).required()
 }).required()

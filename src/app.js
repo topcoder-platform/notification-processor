@@ -96,7 +96,9 @@ const check = () => {
   }
   let connected = true
   consumer.client.initialBrokers.forEach(conn => {
-    logger.debug(`url ${conn.server()} - connected=${conn.connected}`)
+    if (!conn.connected) {
+      logger.error(`url ${conn.server()} - connected=${conn.connected}`)
+    }
     connected = conn.connected & connected
   })
   return connected

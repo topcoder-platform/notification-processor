@@ -35,10 +35,9 @@ module.exports = {
 
   INCLUDE_UPDATES: process.env.INCLUDE_UPDATES || false,
 
-  CHALLENGE_API_URL: process.env.CHALLENGE_API_URL || 'https://api.topcoder-dev.com/v4/challenges',
+  CHALLENGE_API_URL: process.env.CHALLENGE_API_URL || 'https://api.topcoder-dev.com/v5/challenges',
   SUBMISSION_API_URL: process.env.SUBMISSION_API_URL || 'https://api.topcoder-dev.com/v5/submissions',
-  MEMBER_API_URL: process.env.MEMBER_API_URL || 'https://api.topcoder-dev.com/v3/members',
-  USER_API_URL: process.env.USER_API_URL || 'https://api.topcoder-dev.com/v3/users',
+  MEMBER_API_URL: process.env.MEMBER_API_URL || 'https://api.topcoder-dev.com/v5/members',
   REVIEW_TYPE_API_URL: process.env.REVIEW_TYPE_API_URL || 'https://api.topcoder-dev.com/v5/reviewTypes',
 
   AUTH0_URL: process.env.AUTH0_URL || 'https://api.topcoder.com/v5/auth', // Auth0 credentials for M2M token
