@@ -13,33 +13,35 @@ const helper = require('../common/helper')
  * @returns {Promise<>}
  * @private
  */
-async function _fetchSubmissionDetails (submissionId) {
-  const submission = await helper.apiFetchAuthenticated(`${config.SUBMISSION_API_URL}/${submissionId}`)
-  const challengeResponse = await helper.apiFetchAuthenticated(`${config.CHALLENGE_API_URL}/${submission.challengeId}`)
-  const challenge = _.get(challengeResponse, 'result.content')
+async function _fetchSubmissionDetails (submissionId, v5ChallengeId, memberId) {
+  if (!v5ChallengeId || !memberId) {
+    const submission = await helper.apiFetchAuthenticated(`${config.SUBMISSION_API_URL}/${submissionId}`)
+    v5ChallengeId = submission.v5ChallengeId
+    memberId = submission.memberId
+  }
+  const challenge = await helper.apiFetchAuthenticated(`${config.CHALLENGE_API_URL}/${v5ChallengeId}`)
   // Ignore SRMs
-  if (challenge.subTrack === 'SRM') {
+  if (challenge.legacy.subTrack === 'SRM') {
     throw new Error('SRMs are ignored')
   }
 
   // Fetch member details
-  const {
-    memberId: submitterId
-  } = submission
-  const submitter = await _fetchUserDetails(submitterId)
+  const submitter = await _fetchUserDetails(memberId)
 
   return {
     data: {
-      submitter,
-      submission,
-      challenge: _.pick(challenge, [
-        'challengeTitle', 'challengeId', 'submissionEndDate', 'prizes', 'challengeCommunity',
-        'subTrack', 'technologies', 'platforms', 'numberOfRegistrants', 'numberOfSubmissions'
-      ])
+      submitter: {
+        handle: submitter.handle
+      },
+      submission: {
+        id: submissionId
+      },
+      challenge: {
+        challengeTitle: challenge.name
+      }
     },
     version: config.VERSION,
-    recipients: [submitter.email],
-    replyTo: ''
+    recipients: [submitter.email]
   }
 }
 
@@ -50,16 +52,12 @@ async function _fetchSubmissionDetails (submissionId) {
  * @private
  */
 async function _fetchUserDetails (userId) {
-  const userResponse = await helper.apiFetchAuthenticated(`${config.USER_API_URL}/?filter=id=${userId}`)
-  const user = _.get(userResponse, 'result.content[0]')
-  if (!user) throw new Error(`User with ID ${userId} could not be found`)
-  const memberResponse = await helper.apiFetch(`${config.MEMBER_API_URL}/${user.handle}`)
-  const member = _.get(memberResponse, 'result.content')
+  const user = await helper.apiFetchAuthenticated(`${config.MEMBER_API_URL}/?userId=${userId}&fields=handle,email`)
+  if (!user.length) throw new Error(`User with ID ${userId} could not be found`)
 
   return {
-    handle: _.get(user, 'handle'),
-    email: _.get(user, 'email'),
-    rating: member.maxRating
+    handle: _.get(user, '[0].handle'),
+    email: _.get(user, '[0].email')
   }
 }
 
@@ -82,13 +80,15 @@ async function _fetchReviewTypeDetails (typeId) {
 async function processSubmission (message) {
   // Fetch submission details
   const {
-    id
+    id: submissionId,
+    v5ChallengeId,
+    memberId
   } = message.payload
 
-  return _fetchSubmissionDetails(id)
+  return _fetchSubmissionDetails(submissionId, v5ChallengeId, memberId)
 }
 
-processSubmission.schema = {
+processSubmission.schema = Joi.object({
   message: Joi.object().keys({
     topic: Joi.string().required(),
     originator: Joi.string().required(),
@@ -97,11 +97,11 @@ processSubmission.schema = {
     payload: Joi.object().keys({
       resource: Joi.string().valid('submission').required(),
       id: Joi.string().uuid().required(),
-      challengeId: Joi.number().integer().min(1).required(),
+      v5ChallengeId: Joi.string().uuid().required(),
       memberId: Joi.number().integer().min(1).required()
     }).unknown(true).required()
   }).required()
-}
+}).required()
 
 /**
  * Handle 'review' message
@@ -124,7 +124,7 @@ async function processReview (message) {
   }
 }
 
-processReview.schema = {
+processReview.schema = Joi.object({
   message: Joi.object().keys({
     topic: Joi.string().required(),
     originator: Joi.string().required(),
@@ -134,10 +134,12 @@ processReview.schema = {
       resource: Joi.string().valid('review').required(),
       id: Joi.string().uuid().required(),
       submissionId: Joi.string().uuid().required(),
-      reviewerId: Joi.string().uuid().required()
+      reviewerId: Joi.string().uuid().required(),
+      typeId: Joi.string().uuid().required(),
+      score: Joi.number().required()
     }).unknown(true).required()
   }).required()
-}
+}).required()
 
 // Exports
 module.exports = {

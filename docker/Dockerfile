@@ -1,5 +1,5 @@
-# Use the base image with Node.js 10.15-jessie
-FROM node:10.15-jessie
+# Use the base image with Node.js 16.20.1-buster
+FROM node:16.20.1-buster
 
 # Copy the current directory into the Docker image
 COPY . /submission-notification-processor
@@ -8,5 +8,5 @@ COPY . /submission-notification-processor
 WORKDIR /submission-notification-processor
 
 # Install the dependencies from package.json
-RUN npm install
-CMD npm run start
+RUN yarn install
+CMD node src/app.js

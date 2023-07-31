@@ -15,8 +15,6 @@ const {
   submissionResponse,
   submitterResponse,
   status500SubmissionId,
-  userResponse,
-  userId,
   SRMChallengeId,
   SRMChallengeResponse,
   SRMSubmissionId,
@@ -33,7 +31,7 @@ prepare((done) => {
   nock(config.AUTH0_URL)
     .persist()
     .post(() => true)
-    .reply(200, {access_token: 'token'})
+    .reply(200, { access_token: 'token' })
   // mock submission api requests
   nock(config.SUBMISSION_API_URL)
     .persist()
@@ -63,12 +61,6 @@ prepare((done) => {
     .persist()
     .get(`/${reviewTypeId}`)
     .reply(200, reviewType)
-
-  // mock user api request
-  nock(config.USER_API_URL)
-    .persist()
-    .get(`/?filter=id=${userId}`)
-    .reply(200, userResponse)
 
   done()
 }, (done) => {

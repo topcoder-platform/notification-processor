@@ -61,7 +61,6 @@ const dataHandler = async (messageSet, topic, partition) => {
         details = await processorService.processReview(messageJSON)
       } else if (resource === 'submission') {
         details = await processorService.processSubmission(messageJSON)
-        logger.debug(`details ${details}`)
       }
       // Send details with producer
       await producer.send({
@@ -96,7 +95,9 @@ const check = () => {
   }
   let connected = true
   consumer.client.initialBrokers.forEach(conn => {
-    logger.debug(`url ${conn.server()} - connected=${conn.connected}`)
+    if (!conn.connected) {
+      logger.error(`url ${conn.server()} - connected=${conn.connected}`)
+    }
     connected = conn.connected & connected
   })
   return connected

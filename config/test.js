@@ -7,8 +7,8 @@ module.exports = {
   LOG_LEVEL: 'debug',
   KAFKA_PRODUCER_URL: process.env.TEST_KAFKA_PRODUCER_URL || 'localhost:9092',
   KAFKA_CONSUMER_URL: process.env.TEST_KAFKA_CONSUMER_URL || 'localhost:9092',
-  CHALLENGE_API_URL: process.env.TEST_CHALLENGE_API_URL || 'https://api.topcoder-dev.com/v4/challenges',
+  CHALLENGE_API_URL: process.env.TEST_CHALLENGE_API_URL || 'https://api.topcoder-dev.com/v5/challenges',
   SUBMISSION_API_URL: process.env.TEST_SUBMISSION_API_URL || 'https://api.topcoder-dev.com/v5/submissions',
-  MEMBER_API_URL: process.env.TEST_MEMBER_API_URL || 'https://api.topcoder-dev.com/v3/members',
+  MEMBER_API_URL: process.env.TEST_MEMBER_API_URL || 'https://api.topcoder-dev.com/v5/members',
   WAIT_TIME: 1000 // small wait time used in test
 }

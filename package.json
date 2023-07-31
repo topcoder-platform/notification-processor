@@ -25,23 +25,27 @@
     "standard": "^11.0.1"
   },
   "dependencies": {
-    "bluebird": "^3.5.1",
-    "config": "^3.0.1",
+    "axios": "^1.4.0",
+    "bluebird": "^3.7.2",
+    "config": "^3.3.9",
     "get-parameter-names": "^0.3.0",
-    "joi": "^14.3.1",
-    "lodash": "^4.17.10",
+    "joi": "^17.9.2",
+    "lodash": "^4.17.21",
     "no-kafka": "^3.4.3",
-    "superagent": "^4.1.0",
     "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6",
     "topcoder-healthcheck-dropin": "^1.0.2",
-    "winston": "^2.2.0"
+    "winston": "^3.10.0"
   },
   "engines": {
-    "node": "8.x"
+    "node": "16.x"
   },
   "standard": {
     "env": [
       "mocha"
     ]
+  },
+  "volta": {
+    "node": "16.20.1",
+    "yarn": "1.22.19"
   }
 }
