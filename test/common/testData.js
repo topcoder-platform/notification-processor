@@ -437,7 +437,6 @@ const submissionResult = {
       'subTrack': 'CODE',
       'technologies': ['Node.js'],
       'platforms': ['NodeJS'],
-      'communities': {},
       'numberOfRegistrants': 5,
       'numberOfSubmissions': 5
     }
@@ -495,7 +494,6 @@ const reviewResult = {
       'subTrack': 'CODE',
       'technologies': ['Node.js'],
       'platforms': ['NodeJS'],
-      'communities': {},
       'numberOfRegistrants': 5,
       'numberOfSubmissions': 5
     },

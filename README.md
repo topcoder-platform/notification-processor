@@ -1,5 +1,8 @@
 # Topcoder - Submission Notification Processor
 
+### Deployment status
+Dev: [![CircleCI](https://circleci.com/gh/topcoder-platform/notification-processor/tree/develop.svg?style=svg)](https://circleci.com/gh/topcoder-platform/notification-processor/tree/develop) Prod: [![CircleCI](https://circleci.com/gh/topcoder-platform/notification-processor/tree/master.svg?style=svg)](https://circleci.com/gh/topcoder-platform/notification-processor/tree/master)
+
 ## Dependencies
 
 - nodejs https://nodejs.org/en/ (v8+)
