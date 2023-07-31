@@ -33,10 +33,9 @@ The following parameters can be set in config files or in env variables:
 - UPDATE_NOTIFICATION_TOPIC: Submission notification update Kafka topic, default value is 'submission.notification.update'
 - PRODUCER_TOPIC: Kafka topic that producer publishes results to, default value is 'test.email'
 
-- CHALLENGE_API_URL: Challenge API URL, default value is 'https://api.topcoder-dev.com/v4/challenges'
+- CHALLENGE_API_URL: Challenge API URL, default value is 'https://api.topcoder-dev.com/v5/challenges'
 - SUBMISSION_API_URL: Submission API URL, default value is 'https://api.topcoder-dev.com/v5/submissions'
-- MEMBER_API_URL: Member API URL, default value is 'https://api.topcoder-dev.com/v3/members'
-- USER_API_URL: User API URL, default value is 'https://api.topcoder-dev.com/v3/users'
+- MEMBER_API_URL: Member API URL, default value is 'https://api.topcoder-dev.com/v5/members'
 
 - AUTH0_URL: Auth0 url for M2M token
 - AUTH0_AUDIENCE: Auth0 audience for M2M token || 'https://www.topcoder-dev.com',
@@ -49,10 +48,9 @@ Also note that there is a `/health` endpoint that checks for the health of the a
 Configuration for the tests is at `config/test.js`. Following parameters need to be set via environment variables or directly in config file
 
 - TEST_KAFKA_URL: Kafka URL pointing to Kafka test instance
-- TEST_CHALLENGE_API_URL: Challenge API URL to use in tests, default value is 'https://api.topcoder-dev.com/v4/challenges'
+- TEST_CHALLENGE_API_URL: Challenge API URL to use in tests, default value is 'https://api.topcoder-dev.com/v5/challenges'
 - TEST_SUBMISSION_API_URL: Submission API URL to use in testsL, default value is 'https://api.topcoder-dev.com/v5/submissions'
-- TEST_MEMBER_API_URL: Member API URL to use in tests, default value is 'https://api.topcoder-dev.com/v3/members'
-- TEST_USER_API_URL: User API URL to use in tests, default value is 'https://api.topcoder-dev.com/v3/users'
+- TEST_MEMBER_API_URL: Member API URL to use in tests, default value is 'https://api.topcoder-dev.com/v5/members'
 - WAIT_TIME: wait time used in test, default is 1000 or one second
 
 ## Local Kafka setup

@@ -3,7 +3,7 @@
  */
 const _ = require('lodash')
 const config = require('config')
-const request = require('superagent')
+const axios = require('axios')
 const m2mAuth = require('tc-core-library-js').auth.m2m
 const logger = require('./logger')
 const m2m = m2mAuth(_.pick(config, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'AUTH0_PROXY_SERVER_URL']))
@@ -24,21 +24,15 @@ async function apiFetchAuthenticated (path) {
   // Token necessary to send request to Submission API
   const token = await getM2Mtoken()
   logger.debug(`Fetching from ${path}`)
-  const response = await request
-    .get(path)
-    .set('Authorization', `Bearer ${token}`)
-    .set('Content-Type', 'application/json')
+  const response = await axios.get(path, { headers: { Authorization: `Bearer ${token}` } })
 
-  return response.body
+  return response.data
 }
 
 async function apiFetch (path) {
   logger.debug(`Fetching from ${path}`)
-  const response = await request
-    .get(path)
-    .set('Content-Type', 'application/json')
-
-  return response.body
+  const response = await axios.get(path)
+  return response.data
 }
 
 module.exports = {

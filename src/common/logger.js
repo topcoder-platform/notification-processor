@@ -4,18 +4,19 @@
 
 const _ = require('lodash')
 const Joi = require('joi')
-const winston = require('winston')
+const { createLogger, format, transports } = require('winston')
 const util = require('util')
 const config = require('config')
 const getParams = require('get-parameter-names')
 
-const transports = []
-
-if (!JSON.parse(config.DISABLE_LOGGING)) {
-  transports.push(new (winston.transports.Console)({ level: config.LOG_LEVEL, colorize: true }))
-}
-
-const logger = new (winston.Logger)({ transports })
+const logger = createLogger({
+  level: config.LOG_LEVEL,
+  transports: [
+    new transports.Console({
+      format: format.printf((info) => `${info.level}: ${info.message}`)
+    })
+  ]
+})
 
 /**
  * Log error details with signature
@@ -33,7 +34,7 @@ logger.logFullError = (err, signature) => {
 
   // If error is not logged, log it
   if (!err.logged) {
-    logger.error(err.stack)
+    logger.error(err)
     err.logged = true
   }
 }
@@ -91,13 +92,17 @@ logger.decorateWithLogging = (service) => {
       logger.debug(`ENTER ${name}`)
       logger.debug('input arguments')
       const args = Array.prototype.slice.call(arguments)
-      logger.debug(util.inspect(_sanitizeObject(_combineObject(params, args))))
+      logger.debug(util.inspect(_sanitizeObject(_combineObject(params, args)), { breakLength: Infinity }))
       try {
         const result = await method.apply(this, arguments)
         logger.debug(`EXIT ${name}`)
         logger.debug('output arguments')
         if (result !== null && result !== undefined) {
-          logger.debug(util.inspect(_sanitizeObject(result)))
+          if (_.isString(result)) {
+            logger.debug(result)
+          } else {
+            logger.debug(JSON.stringify(result))
+          }
         }
         return result
       } catch (e) {

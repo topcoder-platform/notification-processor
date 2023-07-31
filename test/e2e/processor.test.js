@@ -3,7 +3,7 @@
  */
 global.Promise = require('bluebird')
 const _ = require('lodash')
-const request = require('superagent')
+const axios = require('axios')
 const Kafka = require('no-kafka')
 const config = require('config')
 const should = require('should')
@@ -154,7 +154,7 @@ describe('Challenge Registration Processor e2e Tests', () => {
 
   it('Should setup healthcheck with check on kafka connection', async () => {
     const healthcheckEndpoint = `http://localhost:${process.env.PORT || 3000}/health`
-    let result = await request.get(healthcheckEndpoint)
+    let result = await axios.get(healthcheckEndpoint)
     should.equal(result.status, 200)
     should.deepEqual(result.body, {checksRun: 1})
     debugLogs.should.match(/connected=true/)
