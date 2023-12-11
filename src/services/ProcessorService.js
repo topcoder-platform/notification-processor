@@ -25,6 +25,11 @@ async function _fetchSubmissionDetails (submissionId, v5ChallengeId, memberId) {
     throw new Error('SRMs are ignored')
   }
 
+  // Ignore TopCrowd challenges
+  if (challenge.templateId === config.get('TOPCROWD_CHALLENGE_TEMPLATE_ID')) {
+    throw new Error('TopCrowd challenges are ignored')
+  }
+
   // Fetch member details
   const submitter = await _fetchUserDetails(memberId)
 
