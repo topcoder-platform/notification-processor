@@ -1,7 +1,7 @@
 version: 2
 defaults: &defaults
   docker:
-  - image: cimg/python:3.11.0-browsers
+    - image: cimg/python:3.11.0-browsers
 install_dependency: &install_dependency
   name: Installation of build and deployment dependencies.
   command: |
@@ -25,62 +25,62 @@ restore_cache_settings_for_build: &restore_cache_settings_for_build
 save_cache_settings: &save_cache_settings
   key: docker-node-modules-{{ checksum "yarn.lock" }}
   paths:
-  - node_modules
+    - node_modules
 
 jobs:
   # Build & Deploy against development backend
   "build-dev":
-    !!merge <<: *defaults
+    <<: *defaults
     steps:
-    - checkout
-    - setup_remote_docker
-    - run: *install_dependency
-    - run: *install_deploysuite
-    - restore_cache: *restore_cache_settings_for_build
-    - run: ./build.sh
-    - save_cache: *save_cache_settings
-    - deploy:
-        name: Running MasterScript.
-        command: |
-          ./awsconfiguration.sh DEV
-          source awsenvconf
-          ./buildenv.sh -e DEV -b dev-submission-notification-processor-deployvar
-          source buildenvvar
-          ./master_deploy.sh -d ECS -e DEV -t latest -s dev-global-appvar,dev-submission-notification-processor-appvar -i submission-notification-processor
+      - checkout
+      - setup_remote_docker
+      - run: *install_dependency
+      - run: *install_deploysuite
+      - restore_cache: *restore_cache_settings_for_build
+      - run: ./build.sh
+      - save_cache: *save_cache_settings
+      - deploy:
+          name: Running MasterScript.
+          command: |
+            ./awsconfiguration.sh DEV
+            source awsenvconf
+            ./buildenv.sh -e DEV -b dev-submission-notification-processor-deployvar
+            source buildenvvar
+            ./master_deploy.sh -d ECS -e DEV -t latest -s dev-global-appvar,dev-submission-notification-processor-appvar -i submission-notification-processor
   # Build & Deploy against production backend
   "build-prod":
-    !!merge <<: *defaults
+    <<: *defaults
     steps:
-    - checkout
-    - setup_remote_docker
-    - run: *install_dependency
-    - run: *install_deploysuite
-    - restore_cache: *restore_cache_settings_for_build
-    - run: ./build.sh
-    - save_cache: *save_cache_settings
-    - deploy:
-        name: Running MasterScript.
-        command: |
-          ./awsconfiguration.sh PROD
-          source awsenvconf
-          ./buildenv.sh -e PROD -b prod-submission-notification-processor-deployvar
-          source buildenvvar
-          ./master_deploy.sh -d ECS -e PROD -t latest -s prod-global-appvar,prod-submission-notification-processor-appvar -i submission-notification-processor
+      - checkout
+      - setup_remote_docker
+      - run: *install_dependency
+      - run: *install_deploysuite
+      - restore_cache: *restore_cache_settings_for_build
+      - run: ./build.sh
+      - save_cache: *save_cache_settings
+      - deploy:
+          name: Running MasterScript.
+          command: |
+            ./awsconfiguration.sh PROD
+            source awsenvconf
+            ./buildenv.sh -e PROD -b prod-submission-notification-processor-deployvar
+            source buildenvvar
+            ./master_deploy.sh -d ECS -e PROD -t latest -s prod-global-appvar,prod-submission-notification-processor-appvar -i submission-notification-processor
 workflows:
   version: 2
   build:
     jobs:
-    # Development builds are executed on "develop" branch only.
-    - "build-dev":
-        context: org-global
-        filters:
-          branches:
-            only:
-            - develop
-            - TI-80
-    - "build-prod":
-        context: org-global
-        filters:
-          branches:
-            only:
-            - master
+      # Development builds are executed on "develop" branch only.
+      - "build-dev":
+          context: org-global
+          filters:
+            branches:
+              only:
+                - develop
+                - TI-80
+      - "build-prod":
+          context: org-global
+          filters:
+            branches:
+              only:
+                - master
