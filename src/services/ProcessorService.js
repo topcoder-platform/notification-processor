@@ -26,7 +26,7 @@ async function _fetchSubmissionDetails (submissionId, v5ChallengeId, memberId) {
   }
 
   // Ignore TopCrowd challenges
-  if (challenge.templateId === config.get('TOPCROWD_CHALLENGE_TEMPLATE_ID')) {
+  if (challenge.timelineTemplateId === config.get('TOPCROWD_CHALLENGE_TEMPLATE_ID')) {
     throw new Error('TopCrowd challenges are ignored')
   }
 
